@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Couple Heart Wishes</title>
+<style>
+  body { display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: sans-serif; min-height: 100vh; background: #ffe6f0; }
+  form { display: flex; flex-direction: column; gap: 10px; background: #fff0f5; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px pink; }
+  input, textarea { padding: 10px; border-radius: 5px; border: 1px solid #ffb6c1; }
+  button { padding: 10px; border: none; border-radius: 5px; background: #ff69b4; color: white; cursor: pointer; }
+  .heart { font-size: 50px; color: red; animation: glow 1s infinite alternate; margin-top: 20px; }
+  @keyframes glow { 0% { text-shadow: 0 0 5px #ff69b4; } 100% { text-shadow: 0 0 20px #ff1493; } }
+  .message { margin-top: 10px; font-size: 20px; color: #c71585; text-align: center; white-space: pre-line; }
+</style>
+</head>
+<body>
+
+<form id="wishForm">
+  <input type="text" id="partner" placeholder="Partner ka naam" required>
+  <input type="text" id="sender" placeholder="Aapka naam" required>
+  <textarea id="msg" placeholder="Apni blessings yahan likhe" required></textarea>
+  <button type="submit">Generate Link</button>
+</form>
+
+<div id="display" style="display:none;">
+  <div class="heart">💖</div>
+  <div class="message" id="finalMessage"></div>
+</div>
+
+<script>
+const form = document.getElementById('wishForm');
+form.addEventListener('submit', function(e){
+    e.preventDefault();
+    const partner = encodeURIComponent(document.getElementById('partner').value);
+    const sender = encodeURIComponent(document.getElementById('sender').value);
+    const msg = encodeURIComponent(document.getElementById('msg').value);
+    const link = `${window.location.origin}?partner=${partner}&sender=${sender}&msg=${msg}`;
+    alert("Yeh link apne partner ko send kare: \n" + link);
+});
+
+const urlParams = new URLSearchParams(window.location.search);
+const partner = urlParams.get('partner');
+const sender = urlParams.get('sender');
+const msg = urlParams.get('msg');
+if(partner && sender && msg){
+    document.getElementById('wishForm').style.display = 'none';
+    document.getElementById('display').style.display = 'block';
+    document.getElementById('finalMessage').innerText = `Dear ${decodeURIComponent(partner)},\n\n${decodeURIComponent(msg)}\n\nFrom ${decodeURIComponent(sender)}`;
+}
+</script>
+
+</body>
+</html>
